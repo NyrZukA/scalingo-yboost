@@ -1,0 +1,68 @@
+/* Reset basique */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    height: 100vh; /* Prend toute la hauteur de l'écran */
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center;     /* Centre verticalement */
+    background-color: #1a1a1a; /* Fond sombre */
+    font-family: 'Courier New', Courier, monospace;
+    color: #ffffff;
+}
+
+/* Carte centrale pour faire joli */
+.card {
+    text-align: center;
+    padding: 40px;
+    background: #2d2d2d;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    border: 1px solid #444;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 3rem;
+    letter-spacing: -2px;
+}
+
+p {
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+/* --- LE BOUTON ARC-EN-CIEL --- */
+.mega-rainbow-btn {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    
+    /* Le dégradé de base */
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    background-size: 400%;
+    
+    /* L'animation */
+    animation: glowing 20s linear infinite;
+    transition: transform 0.1s;
+}
+
+/* Effet de clic */
+.mega-rainbow-btn:active {
+    transform: scale(0.95);
+}
+
+/* L'animation qui fait défiler les couleurs */
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}

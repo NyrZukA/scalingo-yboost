@@ -2,38 +2,32 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	// On définit le header pour dire au navigateur qu'on envoie du HTML
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-
-	// On écrit le contenu HTML directement dans la réponse
-	fmt.Fprint(w, `
-		<!DOCTYPE html>
-		<html lang="fr">
-		<head>
-			<meta charset="UTF-8">
-			<title>Ma page Go</title>
-		</head>
-		<body>
-			<h1>Hello World</h1>
-			<p>Ceci est renvoyé par un serveur en Go !</p>
-		</body>
-		</html>
-	`)
-}
-
 func main() {
-	// On associe la route "/" à notre fonction handler
-	http.HandleFunc("/", handler)
+	// 1. Gestion des fichiers statiques (CSS, JS, Images)
+	// On dit au serveur : "Quand une URL commence par /assets/, va chercher dans le dossier 'assets'"
+	fs := http.FileServer(http.Dir("assets"))
+	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
-	fmt.Println("Serveur lancé sur http://localhost:8080")
+	// 2. Gestion de la page d'accueil
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// On va chercher le fichier dans le dossier templates
+		tmpl, err := template.ParseFiles("templates/index.html")
+		if err != nil {
+			http.Error(w, "Erreur interne : impossible de charger le template", http.StatusInternalServerError)
+			fmt.Println("Erreur template:", err)
+			return
+		}
+		tmpl.Execute(w, nil)
+	})
 
-	// On lance le serveur sur le port 8080
+	// 3. Lancement du serveur
+	fmt.Println("🚀 Serveur prêt sur : http://localhost:8080")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
-		fmt.Printf("Erreur lors du lancement du serveur : %s\n", err)
+		fmt.Println("Erreur serveur:", err)
 	}
 }
