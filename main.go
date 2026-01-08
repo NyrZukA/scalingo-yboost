@@ -1,33 +1,69 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
+	"log"
 	"net/http"
+	"os"
 )
 
+// Handle homepage -> index.html
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		errorHandler(w, r, http.StatusNotFound)
+		return
+	}
+
+	tmpl, err := template.ParseFiles("templates/index.html")
+	if err != nil {
+		log.Println("Erreur template index.html:", err)
+		http.Error(w, "Erreur serveur", http.StatusInternalServerError)
+		return
+	}
+
+	err = tmpl.Execute(w, nil)
+	if err != nil {
+		log.Println("Erreur exécution template index.html:", err)
+	}
+}
+
+// Handle error
+func errorHandler(w http.ResponseWriter, r *http.Request, status int) {
+	w.WriteHeader(status)
+	tmpl, err := template.ParseFiles("templates/error.html")
+	if err != nil {
+		log.Println("Erreur template error.html:", err)
+		http.Error(w, http.StatusText(status), status)
+		return
+	}
+
+	data := struct {
+		Status  int
+		Message string
+	}{
+		Status:  status,
+		Message: http.StatusText(status),
+	}
+
+	err = tmpl.Execute(w, data)
+	if err != nil {
+		log.Println("Erreur exécution template error.html:", err)
+	}
+}
+
 func main() {
-	// 1. Gestion des fichiers statiques (CSS, JS, Images)
-	// On dit au serveur : "Quand une URL commence par /assets/, va chercher dans le dossier 'assets'"
+	// Routes
+	http.HandleFunc("/", homeHandler)
+
 	fs := http.FileServer(http.Dir("assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
-	// 2. Gestion de la page d'accueil
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// On va chercher le fichier dans le dossier templates
-		tmpl, err := template.ParseFiles("templates/index.html")
-		if err != nil {
-			http.Error(w, "Erreur interne : impossible de charger le template", http.StatusInternalServerError)
-			fmt.Println("Erreur template:", err)
-			return
-		}
-		tmpl.Execute(w, nil)
-	})
-
-	// 3. Lancement du serveur
-	fmt.Println("🚀 Serveur prêt sur : http://localhost:8080")
-	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
-		fmt.Println("Erreur serveur:", err)
+	port := "3000"
+	if os.Getenv("PORT") != "" {
+		port = os.Getenv("PORT")
 	}
+
+	log.Println("Serveur démarré sur http://localhost:" + port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
+
 }
