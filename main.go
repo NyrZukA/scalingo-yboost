@@ -54,9 +54,8 @@ func main() {
 		createTable()
 	}
 
-	// Servir le CSS
-	fs := http.FileServer(http.Dir("static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	// Servir les fichiers statiques (CSS, JS)
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 
 	// Routes
 	http.HandleFunc("/", indexHandler)
