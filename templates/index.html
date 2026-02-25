@@ -25,14 +25,9 @@
                 <li class="{{ if .Done }}completed{{ end }}">
                     <p class="task-text">{{ .Content }}</p>
                     <div class="actions">
-                        <form action="/toggle" method="POST" style="display:inline;">
-                            <input type="hidden" name="id" value="{{ .ID }}">
-                            <button type="submit" class="btn-icon btn-check">✔</button>
-                        </form>
-                        <form action="/delete" method="POST" style="display:inline;">
-                            <input type="hidden" name="id" value="{{ .ID }}">
-                            <button type="submit" class="btn-icon btn-delete">✖</button>
-                        </form>
+                        <!-- buttons now handled by JS instead of separate forms -->
+                        <button class="btn-icon btn-check" data-id="{{ .ID }}">✔</button>
+                        <button class="btn-icon btn-delete" data-id="{{ .ID }}">✖</button>
                     </div>
                 </li>
                 {{ else }}
@@ -41,5 +36,6 @@
             </ul>
         </div>
     </div>
+    <script src="/assets/scripts.js"></script>
 </body>
 </html>
