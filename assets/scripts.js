@@ -4,6 +4,12 @@
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector(".todo-form");
     if (form) {
+        const inputField = form.querySelector("input[name='content']");
+        if (inputField) {
+            // ensure futuristic styling via JS in case CSS caching is an issue
+            inputField.classList.add('futuristic-input');
+        }
+
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
             const input = form.querySelector("input[name='content']");
