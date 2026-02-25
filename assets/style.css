@@ -61,8 +61,23 @@ body.active-mode .card { background: linear-gradient(45deg, #6200ff, #ff00c8, #0
 @keyframes rainbow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
 
 .todo-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-input[type="text"] { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 15px; border-radius: 15px; color: white; outline: none; }
-input[type="text"]:focus { border-color: #00d4ff; background: rgba(255, 255, 255, 0.2); }
+input[type="text"] {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(0, 212, 255, 0.6);
+    padding: 15px 20px;
+    border-radius: 30px;
+    color: #fff;
+    outline: none;
+    font-size: 1rem;
+    box-shadow: 0 0 10px rgba(0,212,255,0.5);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+input[type="text"]::placeholder { color: rgba(255,255,255,0.6); }
+input[type="text"]:focus {
+    border-color: #00d4ff;
+    box-shadow: 0 0 20px rgba(0,212,255,0.8);
+    background: rgba(0, 0, 0, 0.5);
+}
 
 .todo-list { list-style: none; padding: 0; }
 .todo-list li { background: rgba(255, 255, 255, 0.05); margin-bottom: 8px; padding: 10px 15px; border-radius: 12px; }
