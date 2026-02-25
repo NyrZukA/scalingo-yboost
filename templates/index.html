@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Todo</title>
-    <!-- CSS Link -->
+    <title>Neon Space Todo</title>
+    <!-- On charge le CSS via le handler Go -->
     <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body class="active-mode">
 
+    <!-- Carte Principale -->
     <div class="card">
         <div class="card-content">
             <h1>MISSIONS</h1>
@@ -20,26 +21,28 @@
             </form>
 
             <!-- Liste -->
-            <ul>
+            <ul class="todo-list">
                 {{ range . }}
+                <!-- On ajoute la classe .completed si la tache est faite -->
                 <li class="{{ if .Done }}completed{{ end }}">
                     <span class="task-text">{{ .Content }}</span>
                     
                     <div class="actions">
-                        <!-- Check -->
-                        <form action="/toggle" method="POST">
+                        <!-- Bouton Check -->
+                        <form action="/toggle" method="POST" style="display:inline;">
                             <input type="hidden" name="id" value="{{ .ID }}">
-                            <button type="submit" class="btn-icon btn-check">✔</button>
+                            <button type="submit" class="btn-icon btn-check" title="Valider">✔</button>
                         </form>
-                        <!-- Delete -->
-                        <form action="/delete" method="POST">
+                        
+                        <!-- Bouton Delete -->
+                        <form action="/delete" method="POST" style="display:inline;">
                             <input type="hidden" name="id" value="{{ .ID }}">
-                            <button type="submit" class="btn-icon btn-delete">✖</button>
+                            <button type="submit" class="btn-icon btn-delete" title="Supprimer">✖</button>
                         </form>
                     </div>
                 </li>
                 {{ else }}
-                <div class="empty-state">Aucune mission en cours...</div>
+                <p class="empty-state">Aucune mission en cours...</p>
                 {{ end }}
             </ul>
         </div>
