@@ -1,188 +1,74 @@
-/* --- RESET GÉNÉRAL (Pour être sûr) --- */
-* {
-    box-sizing: border-box;
-}
-
 body {
     margin: 0;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Arial', sans-serif; /* Police simple et propre */
-    background: #050510;
+    font-family: 'Arial', sans-serif;
+    background: #000;
     color: white;
     overflow: hidden;
+    transition: background 2s ease;
 }
 
-/* Le fond nébuleuse */
 body.active-mode {
     background: 
-        radial-gradient(circle at 20% 30%, rgba(70, 0, 150, 0.4), transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(0, 50, 150, 0.4), transparent 50%),
+        radial-gradient(circle at 20% 30%, rgba(70, 0, 150, 0.6), transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(0, 50, 150, 0.6), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(150, 0, 100, 0.4), transparent 70%),
         #050510;
 }
 
-/* --- LA CARTE (Cadre) --- */
+#stars, #stars2, #stars3 {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
+    display: none;
+    opacity: 0;
+    transition: opacity 2s ease;
+    z-index: 0;
+}
+
+body.active-mode #stars, 
+body.active-mode #stars2, 
+body.active-mode #stars3 {
+    display: block;
+    opacity: 1;
+}
+
+#stars { background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat; animation: drift 100s linear infinite; }
+#stars2 { background: radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 150px 100px, #fff, rgba(0,0,0,0)); background-size: 400px 400px; animation: drift 60s linear infinite; }
+
+@keyframes drift { from { transform: translateY(0); } to { transform: translateY(-1000px); } }
+
 .card {
-    position: relative;
-    z-index: 10;
-    padding: 3px; /* Épaisseur bordure arc-en-ciel */
-    border-radius: 20px;
-    background: linear-gradient(45deg, #6200ff, #ff00c8, #00d4ff);
-    box-shadow: 0 0 40px rgba(100, 0, 255, 0.5);
-    width: 90%;
-    max-width: 500px;
+    position: relative; z-index: 10; padding: 3px; border-radius: 30px;
+    background: rgba(255, 255, 255, 0.1); width: 90%; max-width: 500px;
+    display: flex; flex-direction: column;
 }
 
-.card-content {
-    background: rgba(10, 10, 20, 0.9); /* Fond très sombre */
-    backdrop-filter: blur(10px);
-    padding: 40px 30px;
-    border-radius: 17px;
-    text-align: center;
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-}
+body.active-mode .card { background: linear-gradient(45deg, #6200ff, #ff00c8, #00d4ff); box-shadow: 0 0 50px rgba(150, 0, 255, 0.6); }
 
-h1 {
-    margin-top: 0;
-    margin-bottom: 30px;
-    font-size: 2.5rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
+.card-content { background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(15px); padding: 40px; border-radius: 28px; text-align: center; }
 
-/* --- LE FORMULAIRE (Alignement Input + Bouton) --- */
-.todo-form {
-    display: flex;       /* Important: met l'input et le bouton côte à côte */
-    gap: 10px;           /* Espace entre les deux */
-    width: 100%;
-    margin-bottom: 30px;
-}
-
-/* --- L'INPUT (Zone de texte) --- */
-input[type="text"] {
-    flex-grow: 1;        /* Prend toute la place disponible */
-    background: rgba(255, 255, 255, 0.1) !important; /* Force la transparence */
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    padding: 15px 20px;
-    border-radius: 50px;
-    color: white !important;
-    font-size: 1.1rem;
-    outline: none;
-}
-
-/* Change la couleur du texte "Nouvelle mission..." */
-input[type="text"]::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-}
-
-input[type="text"]:focus {
-    border-color: #00d4ff !important;
-    background: rgba(255, 255, 255, 0.2) !important;
-}
-
-/* --- LE BOUTON AJOUTER --- */
 .mega-rainbow-btn {
-    padding: 0 30px;
-    border: none;
-    border-radius: 50px;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-    background: linear-gradient(90deg, #ff0055, #ff9900);
-    box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
-    white-space: nowrap; /* Empêche le texte de passer à la ligne */
+    padding: 15px 40px; font-weight: bold; color: white; border: none; border-radius: 50px; cursor: pointer;
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8);
+    background-size: 400%; animation: rainbow 5s ; margin-top: 10px; transition: transform 0.2s;
 }
+.mega-rainbow-btn:hover { transform: scale(1.05); }
 
-/* --- LA LISTE (Nettoyage des puces) --- */
-ul {
-    list-style: none !important; /* SUPPRIME LES PUCES (•) */
-    padding: 0 !important;
-    margin: 0 !important;
-    width: 100%;
-}
+@keyframes rainbow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
 
-/* Chaque ligne de tâche */
-li {
-    background: rgba(255, 255, 255, 0.08); /* Fond gris transparent */
-    margin-bottom: 12px;
-    padding: 15px 20px;
-    border-radius: 15px;
-    
-    /* FLEXBOX MAGIQUE pour aligner texte et boutons */
-    display: flex !important;
-    justify-content: space-between !important; /* Texte à gauche, boutons à droite */
-    align-items: center !important; /* Centré verticalement */
-    
-    border-left: 5px solid transparent; /* Prépare la bordure verte */
-    transition: 0.3s;
-}
+.todo-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+input[type="text"] { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 15px; border-radius: 15px; color: white; outline: none; }
+input[type="text"]:focus { border-color: #00d4ff; background: rgba(255, 255, 255, 0.2); }
 
-li:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
+.todo-list { list-style: none; padding: 0; }
+.todo-list li { background: rgba(255, 255, 255, 0.05); margin-bottom: 8px; padding: 10px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+.todo-list li.completed .task-text { text-decoration: line-through; color: rgba(255, 255, 255, 0.4); }
 
-/* Texte de la tâche */
-.task-text {
-    font-size: 1.2rem;
-    color: white;
-    text-align: left; /* Force le texte à gauche */
-}
-
-/* Tâche terminée */
-li.completed {
-    border-left: 5px solid #00ff66; /* Bordure verte à gauche */
-    opacity: 0.6;
-}
-li.completed .task-text {
-    text-decoration: line-through;
-}
-
-/* --- LES BOUTONS D'ACTION (Ronds) --- */
-.actions {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-/* On enlève le style moche des formulaires autour des boutons */
-.actions form {
-    margin: 0;
-    display: inline-block;
-}
-
-.btn-icon {
-    width: 35px;
-    height: 35px;
-    border: none;
-    border-radius: 50%; /* Rend le bouton rond */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 1rem;
-    color: white;
-    transition: transform 0.2s;
-}
-
-.btn-check {
-    background: linear-gradient(135deg, #00b09b, #96c93d); /* Vert dégradé */
-}
-
-.btn-delete {
-    background: linear-gradient(135deg, #ff416c, #ff4b2b); /* Rouge dégradé */
-}
-
-.btn-icon:hover {
-    transform: scale(1.1);
-}
-
-.empty-state {
-    margin-top: 20px;
-    color: #888;
-    font-style: italic;
-}
+.btn-icon { border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: 5px; }
+.btn-check { background: #48ff00; color: #000; }
+.btn-delete { background: #ff0055; color: white; }
+.empty-state { font-style: italic; color: rgba(255,255,255,0.3); margin-top: 20px; }
