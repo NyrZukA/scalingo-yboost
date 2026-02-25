@@ -3,50 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Space Todo</title>
-    <!-- On charge le CSS via le handler Go -->
+    <title>Galactic Todo</title>
     <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body class="active-mode">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
 
-    <!-- Carte Principale -->
     <div class="card">
         <div class="card-content">
-            <h1>MISSIONS</h1>
+            <h1 style="margin-top:0; color:#fff; text-shadow: 0 0 10px rgba(255,255,255,0.5);">MISSIONS</h1>
 
-            <!-- Formulaire -->
             <form action="/add" method="POST" class="todo-form">
                 <input type="text" name="content" placeholder="Nouvelle mission..." required autocomplete="off">
                 <button type="submit" class="mega-rainbow-btn">AJOUTER</button>
             </form>
 
-            <!-- Liste -->
             <ul class="todo-list">
                 {{ range . }}
-                <!-- On ajoute la classe .completed si la tache est faite -->
                 <li class="{{ if .Done }}completed{{ end }}">
                     <span class="task-text">{{ .Content }}</span>
-                    
                     <div class="actions">
-                        <!-- Bouton Check -->
                         <form action="/toggle" method="POST" style="display:inline;">
                             <input type="hidden" name="id" value="{{ .ID }}">
-                            <button type="submit" class="btn-icon btn-check" title="Valider">✔</button>
+                            <button type="submit" class="btn-icon btn-check">✔</button>
                         </form>
-                        
-                        <!-- Bouton Delete -->
                         <form action="/delete" method="POST" style="display:inline;">
                             <input type="hidden" name="id" value="{{ .ID }}">
-                            <button type="submit" class="btn-icon btn-delete" title="Supprimer">✖</button>
+                            <button type="submit" class="btn-icon btn-delete">✖</button>
                         </form>
                     </div>
                 </li>
                 {{ else }}
-                <p class="empty-state">Aucune mission en cours...</p>
+                <li class="empty-state">L'espace est vide...</li>
                 {{ end }}
             </ul>
         </div>
     </div>
-
 </body>
 </html>
