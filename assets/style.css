@@ -65,14 +65,18 @@ input[type="text"] { background: rgba(255, 255, 255, 0.1); border: 1px solid rgb
 input[type="text"]:focus { border-color: #00d4ff; background: rgba(255, 255, 255, 0.2); }
 
 .todo-list { list-style: none; padding: 0; }
-.todo-list li { background: rgba(255, 255, 255, 0.05); margin-bottom: 8px; padding: 10px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+.todo-list li { background: rgba(255, 255, 255, 0.05); margin-bottom: 8px; padding: 10px 15px; border-radius: 12px; }
+.todo-list li .task-wrapper { display: flex; justify-content: space-between; align-items: center; }
+.todo-list li .task-text { flex: 1; text-align: left; }
 .todo-list li.completed .task-text { text-decoration: line-through; color: rgba(255, 255, 255, 0.4); }
 
 .btn-icon { border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: 5px;
-    transition: transform 0.2s, opacity 0.2s;
+    transition: transform 0.2s, opacity 0.2s; box-shadow: 0 0 10px rgba(0,255,255,0.5);
+    background: rgba(0,0,0,0.4); color: #fff; font-weight: bold;
 }
-.btn-icon:hover { transform: scale(1.15); }
+.btn-icon:hover { transform: scale(1.2); box-shadow: 0 0 15px rgba(0,255,255,0.8); }
 .btn-icon:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-check { background: #48ff00; color: #000; }
+.btn-edit { background: #00d4ff; color: #000; }
 .btn-delete { background: #ff0055; color: white; }
 .empty-state { font-style: italic; color: rgba(255,255,255,0.3); margin-top: 20px; }

@@ -50,7 +50,7 @@ func main() {
 		if err := db.Ping(); err != nil {
 			log.Fatal("Impossible de se connecter à MySQL:", err)
 		}
-		
+
 		createTable()
 	}
 
@@ -63,6 +63,7 @@ func main() {
 	http.HandleFunc("/add", addHandler)
 	http.HandleFunc("/toggle", toggleHandler)
 	http.HandleFunc("/delete", deleteHandler)
+	http.HandleFunc("/edit", editHandler)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -78,7 +79,7 @@ func parseMySQLURL(rawURL string) (string, error) {
 	if !strings.HasPrefix(rawURL, "mysql://") && strings.Contains(rawURL, "@") {
 		rawURL = "mysql://" + rawURL
 	}
-	
+
 	u, err := url.Parse(rawURL)
 	if err != nil {
 		return "", err
@@ -86,10 +87,10 @@ func parseMySQLURL(rawURL string) (string, error) {
 
 	password, _ := u.User.Password()
 	// Format attendu: user:password@tcp(host:port)/dbname
-	dsn := fmt.Sprintf("%s:%s@tcp(%s)%s?parseTime=true", 
-		u.User.Username(), 
-		password, 
-		u.Host, 
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)%s?parseTime=true",
+		u.User.Username(),
+		password,
+		u.Host,
 		u.Path,
 	)
 	return dsn, nil
@@ -157,6 +158,17 @@ func deleteHandler(w http.ResponseWriter, r *http.Request) {
 	if db != nil {
 		id := r.FormValue("id")
 		db.Exec("DELETE FROM todos WHERE id = ?", id)
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func editHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost && db != nil {
+		id := r.FormValue("id")
+		content := r.FormValue("content")
+		if id != "" && content != "" {
+			db.Exec("UPDATE todos SET content = ? WHERE id = ?", content, id)
+		}
 	}
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

@@ -62,4 +62,26 @@ document.addEventListener("DOMContentLoaded", () => {
             location.reload();
         });
     });
+
+    // edit buttons
+    document.querySelectorAll(".btn-edit").forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const id = btn.dataset.id;
+            if (!id) return;
+            const currentText = btn.closest('li').querySelector('.task-text').textContent;
+            const newText = prompt("Modifier la mission:", currentText);
+            if (newText === null || newText.trim() === "") return;
+            btn.disabled = true;
+            try {
+                await fetch("/edit", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams({ id, content: newText.trim() }),
+                });
+            } catch (err) {
+                console.error("edit error", err);
+            }
+            location.reload();
+        });
+    });
 });
