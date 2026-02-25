@@ -23,7 +23,7 @@
             <ul class="todo-list">
                 {{ range . }}
                 <li class="{{ if .Done }}completed{{ end }}">
-                    <span class="task-text">{{ .Content }}</span>
+                    <p class="task-text">{{ .Content }}</p>
                     <div class="actions">
                         <form action="/toggle" method="POST" style="display:inline;">
                             <input type="hidden" name="id" value="{{ .ID }}">
